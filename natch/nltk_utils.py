@@ -13,41 +13,42 @@ def get_synonyms(word):
     syns = wn.synsets(word)
     for ss in syns:
         lemmas = []
-        for l in ss.lemmas:
-            lemma = { "name": l.name, "related_forms": [] }
+        for l in ss.lemmas():
+            lemma = { "name": l.name(), "related_forms": [] }
             for x in l.derivationally_related_forms():
-                lemma['related_forms'].append(x.name)
+                lemma['related_forms'].append(x.name())
             lemmas.append(lemma)
         synsets.append({
             "lemmas": lemmas,
-            "d": ss.definition,
-            "pos": ss.pos,
-            "id": ss.name
+            "d": ss.definition(),
+            "pos": ss.pos(),
+            "id": ss.name()
         })
     return synsets
-    
+
 def get_hypernyms(word):
     """Gets parent synonyms for a specific lemma from wordnet"""
-    syn = wn.synset(word)
+    syn = wn.synsets(word)
     hnyms = []
-    for h in syn.hypernyms():
+    for h in syn[0].hypernyms():
         hnyms.append({
-            "lemmas": h.lemma_names,
-            "d:": h.definition,
-            "pos": h.pos,
-            "id": h.name
+            "lemmas": h.lemma_names(),
+            "d": h.definition(),
+            "pos": h.pos(),
+            "id": h.name()
         })
     return hnyms
-    
+
 def get_hyponyms(word):
     """Gets child synonyms from wordnet"""
-    syn = wn.synset(word)
+    syn = wn.synsets(word)
     hnyms = []
-    for h in syn.hyponyms():
+    for h in syn[0].hyponyms():
+        print h
         hnyms.append({
-            "lemmas": h.lemma_names,
-            "d:": h.definition,
-            "pos": h.pos,
-            "id": h.name
+            "lemmas": h.lemma_names(),
+            "d": h.definition(),
+            "pos": h.pos(),
+            "id": h.name()
         })
     return hnyms
